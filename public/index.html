@@ -39,51 +39,51 @@
 
 <body translate="no">
     <header class="row-reverse">
-        <a href="#about" class="icon-button" title="About PairDrop" aria-label="Open About PairDrop">
+        <a href="#about" class="icon-button" title="关于 PairDrop" aria-label="Open About PairDrop">
             <svg class="icon">
                 <use xlink:href="#info-outline" />
             </svg>
         </a>
         <div id="theme-wrapper">
-            <div id="theme-auto" class="icon-button selected" title="Adapt Theme to System" >
+            <div id="theme-auto" class="icon-button selected" title="自适应主题" >
                 <svg class="icon">
                     <use xlink:href="#icon-theme-auto" />
                 </svg>
             </div>
             <div>
-                <div id="theme-light" class="icon-button" title="Always Use Light-Theme" >
+                <div id="theme-light" class="icon-button" title="总是使用浅色模式" >
                     <svg class="icon">
                         <use xlink:href="#icon-theme-light" />
                     </svg>
                 </div>
-                <div id="theme-dark" class="icon-button" title="Always Use Dark-Theme" >
+                <div id="theme-dark" class="icon-button" title="总是使用深色模式" >
                     <svg class="icon">
                         <use xlink:href="#icon-theme-dark" />
                     </svg>
                 </div>
             </div>
         </div>
-        <div id="notification" class="icon-button" title="Enable Notifications" hidden>
+        <div id="notification" class="icon-button" title="启用通知" hidden>
             <svg class="icon">
                 <use xlink:href="#notifications" />
             </svg>
         </div>
-        <div id="install" class="icon-button" title="Install PairDrop" hidden>
+        <div id="install" class="icon-button" title="安装 PairDrop" hidden>
             <svg class="icon">
                 <use xlink:href="#homescreen" />
             </svg>
         </div>
-        <div id="pair-device" class="icon-button" title="Pair Device" hidden>
+        <div id="pair-device" class="icon-button" title="配对设备" hidden>
             <svg class="icon">
                 <use xlink:href="#pair-device-icon" />
             </svg>
         </div>
-        <div id="edit-paired-devices" class="icon-button" title="Edit Paired Devices" hidden>
+        <div id="edit-paired-devices" class="icon-button" title="编辑已配对设备" hidden>
             <svg class="icon">
                 <use xlink:href="#edit-pair-devices-icon" />
             </svg>
         </div>
-        <div id="cancel-paste-mode" class="button" hidden>Done</div>
+        <div id="cancel-paste-mode" class="button" hidden>完成</div>
     </header>
     <!-- Center -->
     <div id="center">
@@ -91,10 +91,10 @@
         <div class="x-peers-filler"></div>
         <x-peers class="center"></x-peers>
         <x-no-peers>
-            <h2>Open PairDrop on other devices to send files</h2>
-            <div>Pair devices to be discoverable on other networks</div>
+            <h2>在其它设备中打开 PairDrop 来传送文件</h2>
+            <div>已配对设备可以进行跨网络交互</div>
         </x-no-peers>
-        <x-instructions desktop="Click to send files or right click to send a message" mobile="Tap to send files or long tap to send a message">
+        <x-instructions desktop="点击发送文件，右键发送消息" mobile="点击发送文件，长按发送消息">
             <p id="paste-filename"></p>
         </x-instructions>
     </div>
@@ -104,15 +104,14 @@
             <use xlink:href="#wifi-tethering" />
         </svg>
         <div>
-            <span>You are known as:</span>
-            <div id="display-name" placeholder="Loading..." title="Edit your device name permanently" autocorrect="off" autocomplete="off" autocapitalize="none" spellcheck="false" contenteditable></div>
+            <span>你的昵称是:</span>
+            <div id="display-name" placeholder="加载中..." title="修改你的昵称" autocorrect="off" autocomplete="off" autocapitalize="none" spellcheck="false" contenteditable></div>
             <svg id="edit-pen" class="icon">
                 <use xlink:href="#edit-pen-icon" />
             </svg>
         </div>
         <div class="font-body2">
-            You can be discovered by everyone <span id="on-this-network">on&nbsp;this&nbsp;network</span>
-            <span id="and-by-paired-devices" hidden> and&nbsp;by&nbsp;<span id="paired-devices">paired&nbsp;devices</span></span>
+            已连接到：<span id="on-this-network">当前网络</span><span id="and-by-paired-devices" hidden>以及任何<span id="paired-devices">成功配对的设备</span></span>
         </div>
     </footer>
     <!-- Pair Device Dialog -->
@@ -120,10 +119,10 @@
         <form action="#">
             <x-background class="full center text-center">
                 <x-paper shadow="2">
-                    <h2 class="center">Pair Devices</h2>
+                    <h2 class="center">配对设备</h2>
                     <div id="room-key-qr-code" class="center"></div>
                     <h1 id="room-key" class="center">000 000</h1>
-                    <div id="pair-instructions" class="font-subheading center text-center">Input this key on another device<br>or scan the QR-Code.</div>
+                    <div id="pair-instructions" class="font-subheading center text-center">在其他设备中输入此密钥<br>或扫描二维码</div>
                     <hr>
                     <div id="key-input-container">
                         <input type="tel" class="textarea center" aria-label="pair-key-1" maxlength="1" autocorrect="off" autocomplete="off" autocapitalize="none" spellcheck="false" autofocus contenteditable placeholder="" disabled>
@@ -133,10 +132,10 @@
                         <input type="tel" class="textarea center" aria-label="pair-key-5" maxlength="1" autocorrect="off" autocomplete="off" autocapitalize="none" spellcheck="false" contenteditable placeholder="" disabled>
                         <input type="tel" class="textarea center" aria-label="pair-key-6" maxlength="1" autocorrect="off" autocomplete="off" autocapitalize="none" spellcheck="false" contenteditable placeholder="" disabled>
                     </div>
-                    <div class="font-subheading center text-center">Enter key from another device to continue.</div>
+                    <div class="font-subheading center text-center">输入从其他设备获得的密钥</div>
                     <div class="center row-reverse">
-                        <button class="button" type="submit" disabled>Pair</button>
-                        <button class="button" type="button" close>Cancel</button>
+                        <button class="button" type="submit" disabled>配对</button>
+                        <button class="button" type="button" close>取消</button>
                     </div>
                 </x-paper>
             </x-background>
@@ -147,13 +146,13 @@
         <form action="#">
             <x-background class="full center text-center">
                 <x-paper shadow="2">
-                    <h2 class="center">Edit Paired Devices</h2>
+                    <h2 class="center">编辑已配对的设备</h2>
                     <div class="paired-devices-wrapper"></div>
                     <div class="font-subheading center">
-                        <p>Activate <u>auto-accept</u> to automatically accept all files sent from that device.</p>
+                        <p>启用 <u>自动接受</u> 功能可以自动接受其他设备发送的文件。</p>
                     </div>
                     <div class="center row-reverse">
-                        <button class="button" type="button" close>Close</button>
+                        <button class="button" type="button" close>关闭</button>
                     </div>
                 </x-paper>
             </x-background>
@@ -167,7 +166,7 @@
                 <div class="center column file-description">
                     <div>
                         <span class="display-name"></span>
-                        <span>would like to share</span>
+                        <span>想要向你发送</span>
                     </div>
                     <div class="row file-name" >
                         <span class="file-stem"></span>
@@ -179,8 +178,8 @@
                 </div>
                 <div class="center file-preview"></div>
                 <div class="center row-reverse">
-                    <button id="accept-request" class="button" title="ENTER" autofocus>Accept</button>
-                    <button id="decline-request" class="button" title="ESCAPE">Decline</button>
+                    <button id="accept-request" class="button" title="ENTER" autofocus>接受</button>
+                    <button id="decline-request" class="button" title="ESCAPE">拒绝</button>
                 </div>
             </x-paper>
         </x-background>
@@ -193,7 +192,7 @@
                 <div class="center column file-description">
                     <div>
                         <span class="display-name"></span>
-                        <span>has sent</span>
+                        <span>发送了</span>
                     </div>
                     <div class="row file-name" >
                         <span class="file-stem"></span>
@@ -204,9 +203,9 @@
                 </div>
                 <div class="center file-preview"></div>
                 <div class="center row-reverse">
-                    <button id="share-btn" class="button" autofocus hidden>Share</button>
-                    <button id="download-btn" class="button" autofocus>Download</button>
-                    <button class="button" close>Close</button>
+                    <button id="share-btn" class="button" autofocus hidden>分享</button>
+                    <button id="download-btn" class="button" autofocus>下载</button>
+                    <button class="button" close>关闭</button>
                 </div>
             </x-paper>
         </x-background>
@@ -216,16 +215,16 @@
         <form action="#">
             <x-background class="full center">
                 <x-paper shadow="2">
-                    <h2 class="text-center">Send Message</h2>
+                    <h2 class="text-center">发送消息</h2>
                     <div class="dialog-subheader text-center">
-                        <span>Send a Message to</span>
+                        <span>发送消息给</span>
                         <span class="display-name"></span>
                     </div>
                     <div class="row-separator"></div>
                     <div id="text-input" title="Message" class="textarea" role="textbox" autocapitalize="none" spellcheck="false" autofocus contenteditable></div>
                     <div class="center row-reverse">
-                        <button class="button" type="submit" title="CTRL/⌘ + ENTER" disabled>Send</button>
-                        <button class="button" type="button" title="ESCAPE" close>Cancel</button>
+                        <button class="button" type="submit" title="CTRL/⌘ + ENTER" disabled>发送</button>
+                        <button class="button" type="button" title="ESCAPE" close>取消</button>
                     </div>
                 </x-paper>
             </x-background>
@@ -235,16 +234,16 @@
     <x-dialog id="receive-text-dialog">
         <x-background class="full center">
             <x-paper shadow="2">
-                <h2 class="text-center">Message Received</h2>
+                <h2 class="text-center">收到消息</h2>
                 <div class="text-center dialog-subheader">
                     <span class="display-name"></span>
-                    <span>has sent:</span>
+                    <span>发送了消息:</span>
                 </div>
                 <div class="row-separator"></div>
                 <div id="text"></div>
                 <div class="center row-reverse">
-                    <button id="copy" class="button" title="CTRL/⌘ + C">Copy</button>
-                    <button id="close" class="button" title="ESCAPE">Close</button>
+                    <button id="copy" class="button" title="CTRL/⌘ + C">复制</button>
+                    <button id="close" class="button" title="ESCAPE">关闭</button>
                 </div>
             </x-paper>
         </x-background>
@@ -253,9 +252,9 @@
     <x-dialog id="base64-paste-dialog">
         <x-background class="full center">
             <x-paper shadow="2">
-                <button class="button center" id="base64-paste-btn" title="Paste">Tap here to paste files</button>
-                <div class="textarea" placeholder="Paste here to send files" title="CMD/⌘ + V" contenteditable hidden></div>
-                <button class="button center" close>Close</button>
+                <button class="button center" id="base64-paste-btn" title="Paste">点击粘贴</button>
+                <div class="textarea" placeholder="在此次粘贴来发送文件" title="CMD/⌘ + V" contenteditable hidden></div>
+                <button class="button center" close>关闭</button>
             </x-paper>
         </x-background>
     </x-dialog>
@@ -280,7 +279,7 @@
                 <h1>PairDrop</h1>
                 <div class="font-subheading">v1.7.7</div>
             </div>
-            <div class="font-subheading">The easiest way to transfer files across devices</div>
+            <div class="font-subheading">跨设备传输文件的最简单方法</div>
             <div class="row">
                 <a class="icon-button" target="_blank" href="https://github.com/schlagmichdoch/pairdrop" title="PairDrop on Github" rel="noreferrer">
                     <svg class="icon">
@@ -388,8 +387,8 @@
     <!-- no script -->
     <noscript>
         <x-noscript class="full center column">
-            <h1>Enable JavaScript</h1>
-            <h3>PairDrop works only with JavaScript</h3>
+            <h1>启用 JavaScript</h1>
+            <h3>PairDrop 必须使用 JavaScript 才能正确工作</h3>
         </x-noscript>
     </noscript>
 </body>

@@ -89,12 +89,12 @@ class PeersUI {
         if (newDisplayName) {
             PersistentStorage.set('editedDisplayName', newDisplayName)
                 .then(_ => {
-                    Events.fire('notify-user', 'Device name is changed permanently.');
+                    Events.fire('notify-user', '已记住此设备名称');
                 })
                 .catch(_ => {
                     console.log("This browser does not support IndexedDB. Use localStorage instead.");
                     localStorage.setItem('editedDisplayName', newDisplayName);
-                    Events.fire('notify-user', 'Device name is changed only for this session.');
+                    Events.fire('notify-user', '此名称变更仅在当前会话内有效');
                 })
                 .finally(_ => {
                     Events.fire('self-display-name-changed', newDisplayName);
@@ -105,10 +105,10 @@ class PeersUI {
                 .catch(_ => {
                     console.log("This browser does not support IndexedDB. Use localStorage instead.")
                     localStorage.removeItem('editedDisplayName');
-                    Events.fire('notify-user', 'Random Display name is used again.');
+                    Events.fire('notify-user', '正在使用随机名称');
                 })
                 .finally(_ => {
-                    Events.fire('notify-user', 'Device name is randomly generated again.');
+                    Events.fire('notify-user', '设备名称已重新随机生成');
                     Events.fire('self-display-name-changed', '');
                     Events.fire('broadcast-send', {type: 'self-display-name-changed', detail: ''});
                 });
@@ -277,19 +277,19 @@ class PeersUI {
 
             if (files.length === 1) {
                 descriptor = files[0].name;
-                noPeersMessage = `Open PairDrop on other devices to send<br><i>${descriptor}</i>`;
+                noPeersMessage = `在其它设备中打开 PairDrop 来发送<br><i>${descriptor}</i>`;
             } else if (files.length > 1) {
-                descriptor = `${files[0].name} and ${files.length-1} other files`;
-                noPeersMessage = `Open PairDrop on other devices to send<br>${descriptor}`;
+                descriptor = `${files[0].name} 以及其他 ${files.length-1} 个文件`;
+                noPeersMessage = `在其它设备中打开 PairDrop 来发送<br>${descriptor}`;
             } else {
-                descriptor = "shared text";
-                noPeersMessage = `Open PairDrop on other devices to send<br>${descriptor}`;
+                descriptor = "分享文本";
+                noPeersMessage = `在其它设备中打开 PairDrop 来发送<br>${descriptor}`;
             }
 
             this.$xInstructions.querySelector('p').innerHTML = `<i>${descriptor}</i>`;
             this.$xInstructions.querySelector('p').style.display = 'block';
-            this.$xInstructions.setAttribute('desktop', `Click to send`);
-            this.$xInstructions.setAttribute('mobile', `Tap to send`);
+            this.$xInstructions.setAttribute('desktop', `点击发送`);
+            this.$xInstructions.setAttribute('mobile', `点击发送`);
 
             this.$xNoPeers.querySelector('h2').innerHTML = noPeersMessage;
 
@@ -320,10 +320,10 @@ class PeersUI {
             this.$xInstructions.querySelector('p').innerText = '';
             this.$xInstructions.querySelector('p').style.display = 'none';
 
-            this.$xInstructions.setAttribute('desktop', 'Click to send files or right click to send a message');
-            this.$xInstructions.setAttribute('mobile', 'Tap to send files or long tap to send a message');
+            this.$xInstructions.setAttribute('desktop', '点击发送文件，右键发送消息');
+            this.$xInstructions.setAttribute('mobile', '点击发送文件，长按发送消息');
 
-            this.$xNoPeers.querySelector('h2').innerHTML = 'Open PairDrop on other devices to send files';
+            this.$xNoPeers.querySelector('h2').innerHTML = '在其它设备中打开 PairDrop 来发送文件';
 
             this.$cancelPasteModeBtn.setAttribute('hidden', "");
 
@@ -368,9 +368,9 @@ class PeerUI {
         let title;
         let input = '';
         if (window.pasteMode.activated) {
-            title = `Click to send ${window.pasteMode.descriptor}`;
+            title = `点击发送 ${window.pasteMode.descriptor}`;
         } else {
-            title = 'Click to send files or right click to send a message';
+            title = '点击发送文件，右键发送消息';
             input = '<input type="file" multiple>';
         }
         this.$el.innerHTML = `
@@ -392,7 +392,7 @@ class PeerUI {
                     <div class="name font-subheading"></div>
                     <div class="device-name font-body2"></div>
                     <div class="status font-body2"></div>
-                    <span class="connection-hash font-body2" title="To verify the security of the end-to-end encryption, compare this security number on both devices"></span>
+                    <span class="connection-hash font-body2" title="要验证端到端加密的安全性，请在两台设备上比较此安全代码"></span>
                 </div>
             </label>`;
 
@@ -595,7 +595,7 @@ class Dialog {
     _onPeerDisconnected(peerId) {
         if (this.isShown() && this.correspondingPeerId === peerId) {
             this.hide();
-            Events.fire('notify-user', 'Selected peer left.')
+            Events.fire('notify-user', '选定配对设备已离开')
         }
     }
 }
@@ -629,11 +629,11 @@ class ReceiveDialog extends Dialog {
 
     _parseFileData(displayName, connectionHash, files, imagesOnly, totalSize) {
         if (files.length > 1) {
-            let fileOtherText = ` and ${files.length - 1} other `;
+            let fileOtherText = ` 和 ${files.length - 1} 个其他`;
             if (files.length === 2) {
-                fileOtherText += imagesOnly ? 'image' : 'file';
+                fileOtherText += imagesOnly ? '图片' : '文件';
             } else {
-                fileOtherText += imagesOnly ? 'images' : 'files';
+                fileOtherText += imagesOnly ? '图片' : '文件';
             }
             this.$fileOther.innerText = fileOtherText;
         }
@@ -712,12 +712,12 @@ class ReceiveFileDialog extends ReceiveDialog {
                         resolve(true);
                     };
                     element.onerror = _ => {
-                        reject(`${mime} preview could not be loaded from type ${file.type}`);
+                        reject(`无法为文件类型 ${file.type} 加载 ${mime} 预览`);
                     };
                     element.src = URL.createObjectURL(file);
                 }
             } catch (e) {
-                reject(`preview could not be loaded from type ${file.type}`);
+                reject(`无法为 ${file.type} 类型文件加载预览`);
             }
         });
     }
@@ -727,11 +727,11 @@ class ReceiveFileDialog extends ReceiveDialog {
 
         let descriptor, url, filenameDownload;
         if (files.length === 1) {
-            descriptor = imagesOnly ? 'Image' : 'File';
+            descriptor = imagesOnly ? '图片' : '文件';
         } else {
-            descriptor = imagesOnly ? 'Images' : 'Files';
+            descriptor = imagesOnly ? '图片' : '文件';
         }
-        this.$receiveTitle.innerText = `${descriptor} Received`;
+        this.$receiveTitle.innerText = `已收到${descriptor}`;
 
         const canShare = (window.iOS || window.android) && !!navigator.share && navigator.canShare({files});
         if (canShare) {
@@ -781,7 +781,7 @@ class ReceiveFileDialog extends ReceiveDialog {
             }
         }
 
-        this.$downloadBtn.innerText = "Download";
+        this.$downloadBtn.innerText = "下载";
         this.$downloadBtn.onclick = _ => {
             if (downloadZipped) {
                 let tmpZipBtn = document.createElement("a");
@@ -793,16 +793,16 @@ class ReceiveFileDialog extends ReceiveDialog {
             }
 
             if (!canShare) {
-                this.$downloadBtn.innerText = "Download again";
+                this.$downloadBtn.innerText = "再次下载";
             }
-            Events.fire('notify-user', `${descriptor} downloaded successfully`);
+            Events.fire('notify-user', `${descriptor} 下载成功`);
             this.$downloadBtn.style.pointerEvents = "none";
             setTimeout(_ => this.$downloadBtn.style.pointerEvents = "unset", 2000);
         };
 
         document.title = files.length === 1
-            ? 'File received - PairDrop'
-            : `${files.length} Files received - PairDrop`;
+            ? '已收到文件 - PairDrop'
+            : `已收到 ${files.length} 个文件 - PairDrop`;
         document.changeFavicon("images/favicon-96x96-notification.png");
         Events.fire('set-progress', {peerId: peerId, progress: 1, status: 'process'})
         this.show();
@@ -889,9 +889,9 @@ class ReceiveRequestDialog extends ReceiveDialog {
             this.$previewBox.appendChild(element)
         }
 
-        this.$receiveTitle.innerText = `${request.imagesOnly ? 'Image' : 'File'} Transfer Request`
+        this.$receiveTitle.innerText = `${request.imagesOnly ? '图片' : '文件'}传送请求`
 
-        document.title = `${request.imagesOnly ? 'Image' : 'File'} Transfer Requested - PairDrop`;
+        document.title = `收到${request.imagesOnly ? '图片' : '文件'}传送请求 - PairDrop`;
         document.changeFavicon("images/favicon-96x96-notification.png");
         this.show();
     }
@@ -1083,7 +1083,7 @@ class PairDeviceDialog extends Dialog {
         if (BrowserTabsConnector.peerIsSameBrowser(peerId)) {
             this._cleanUp();
             this.hide();
-            Events.fire('notify-user', 'Pairing of two browser tabs is not possible.');
+            Events.fire('notify-user', '无法将相同浏览器的两个标签页配对');
             return;
         }
 
@@ -1129,7 +1129,7 @@ class PairDeviceDialog extends Dialog {
 
         PersistentStorage.addRoomSecret(roomSecret, displayName, deviceName)
             .then(_ => {
-                Events.fire('notify-user', 'Devices paired successfully.');
+                Events.fire('notify-user', '设备成功配对');
                 this._evaluateNumberRoomSecrets();
             })
             .finally(_ => {
@@ -1137,13 +1137,13 @@ class PairDeviceDialog extends Dialog {
                 this.hide();
             })
             .catch(_ => {
-                Events.fire('notify-user', 'Paired devices are not persistent.');
+                Events.fire('notify-user', '配对设备信息仅在当前会话生效');
                 PersistentStorage.logBrowserNotCapable();
             });
     }
 
     _pairDeviceJoinKeyInvalid() {
-        Events.fire('notify-user', 'Key not valid');
+        Events.fire('notify-user', '无效配对码');
     }
 
     _pairDeviceCancel() {
@@ -1153,7 +1153,7 @@ class PairDeviceDialog extends Dialog {
     }
 
     _pairDeviceCanceled(roomKey) {
-        Events.fire('notify-user', `Key ${roomKey} invalidated.`);
+        Events.fire('notify-user', `配对码 ${roomKey} 已失效.`);
     }
 
     _cleanUp() {
@@ -1215,10 +1215,10 @@ class EditPairedDevicesDialog extends Dialog {
                 <span>${roomSecretsEntry.device_name}</span>
             </div>
             <div class="button-wrapper">
-                <label class="auto-accept">auto-accept
+                <label class="auto-accept">自动接受
                     <input type="checkbox" ${roomSecretsEntry.auto_accept ? "checked" : ""}>
                 </label>
-                <button class="button" type="button">unpair</button>
+                <button class="button" type="button">取消配对</button>
             </div>`
 
             $pairedDevice.querySelector('input[type="checkbox"]').addEventListener('click', e => {
@@ -1260,7 +1260,7 @@ class EditPairedDevicesDialog extends Dialog {
                 PersistentStorage.clearRoomSecrets().finally(_ => {
                     Events.fire('room-secrets-deleted', roomSecrets);
                     Events.fire('evaluate-number-room-secrets');
-                    Events.fire('notify-user', 'All Devices unpaired.');
+                    Events.fire('notify-user', '所有设备已取消配对');
                     this.hide();
                 })
             });
@@ -1415,14 +1415,14 @@ class ReceiveTextDialog extends Dialog {
 
     _setDocumentTitleMessages() {
         document.title = !this._receiveTextQueue.length
-            ? 'Message Received - PairDrop'
-            : `${this._receiveTextQueue.length + 1} Messages Received - PairDrop`;
+            ? '收到消息 - PairDrop'
+            : `收到${this._receiveTextQueue.length + 1}条消息 - PairDrop`;
     }
 
     async _onCopy() {
         const sanitizedText = this.$text.innerText.replace(/\u00A0/gm, ' ');
         await navigator.clipboard.writeText(sanitizedText);
-        Events.fire('notify-user', 'Copied to clipboard');
+        Events.fire('notify-user', '已复制到剪贴板');
         this.hide();
     }
 
@@ -1455,7 +1455,7 @@ class Base64ZipDialog extends Dialog {
                 // base64 encoded string is url hash which is never sent to server and faster (recommended)
                 this.processBase64Text(base64Hash)
                     .catch(_ => {
-                        Events.fire('notify-user', 'Text content is incorrect.');
+                        Events.fire('notify-user', '文本内容不正确');
                         console.log("Text content incorrect.");
                     }).finally(_ => {
                         this.hide();
@@ -1465,7 +1465,7 @@ class Base64ZipDialog extends Dialog {
                 // base64 encoded string was part of url param (not recommended)
                 this.processBase64Text(base64Text)
                     .catch(_ => {
-                        Events.fire('notify-user', 'Text content is incorrect.');
+                        Events.fire('notify-user', '文本内容错误');
                         console.log("Text content incorrect.");
                     }).finally(_ => {
                         this.hide();
@@ -1478,7 +1478,7 @@ class Base64ZipDialog extends Dialog {
                 // base64 encoded zip file is url hash which is never sent to the server
                 this.processBase64Zip(base64Hash)
                     .catch(_ => {
-                        Events.fire('notify-user', 'File content is incorrect.');
+                        Events.fire('notify-user', '文件内容不正确');
                         console.log("File content incorrect.");
                     }).finally(_ => {
                         this.hide();
@@ -1492,18 +1492,18 @@ class Base64ZipDialog extends Dialog {
 
     _setPasteBtnToProcessing() {
         this.$pasteBtn.style.pointerEvents = "none";
-        this.$pasteBtn.innerText = "Processing...";
+        this.$pasteBtn.innerText = "正在处理...";
     }
 
     preparePasting(type) {
         if (navigator.clipboard.readText) {
-            this.$pasteBtn.innerText = `Tap here to paste ${type}`;
+            this.$pasteBtn.innerText = `点此粘贴 ${type}`;
             this._clickCallback = _ => this.processClipboard(type);
             this.$pasteBtn.addEventListener('click', _ => this._clickCallback());
         } else {
             console.log("`navigator.clipboard.readText()` is not available on your browser.\nOn Firefox you can set `dom.events.asyncClipboard.readText` to true under `about:config` for convenience.")
             this.$pasteBtn.setAttribute('hidden', '');
-            this.$fallbackTextarea.setAttribute('placeholder', `Paste here to send ${type}`);
+            this.$fallbackTextarea.setAttribute('placeholder', `在此处粘贴来发送 ${type}`);
             this.$fallbackTextarea.removeAttribute('hidden');
             this._inputCallback = _ => this.processInput(type);
             this.$fallbackTextarea.addEventListener('input', _ => this._inputCallback());
@@ -1543,7 +1543,7 @@ class Base64ZipDialog extends Dialog {
                 await this.processBase64Zip(base64);
             }
         } catch(_) {
-            Events.fire('notify-user', 'Clipboard content is incorrect.');
+            Events.fire('notify-user', '剪贴板内容不正确');
             console.log("Clipboard content is incorrect.")
         }
         this.hide();
@@ -1623,10 +1623,10 @@ class Notifications {
     _requestPermission() {
         Notification.requestPermission(permission => {
             if (permission !== 'granted') {
-                Events.fire('notify-user', Notifications.PERMISSION_ERROR || 'Error');
+                Events.fire('notify-user', Notifications.PERMISSION_ERROR || '通知权限错误');
                 return;
             }
-            Events.fire('notify-user', 'Notifications enabled.');
+            Events.fire('notify-user', '通知功能已启用');
             this.$button.setAttribute('hidden', 1);
         });
     }
@@ -1661,10 +1661,10 @@ class Notifications {
         if (document.visibilityState !== 'visible') {
             const peerDisplayName = $(peerId).ui._displayName();
             if (/^((https?:\/\/|www)[abcdefghijklmnopqrstuvwxyz0123456789\-._~:\/?#\[\]@!$&'()*+,;=]+)$/.test(message.toLowerCase())) {
-                const notification = this._notify(`Link received by ${peerDisplayName} - Click to open`, message);
+                const notification = this._notify(`收到来自 ${peerDisplayName} 的链接 - 点击打开`, message);
                 this._bind(notification, _ => window.open(message, '_blank', null, true));
             } else {
-                const notification = this._notify(`Message received by ${peerDisplayName} - Click to copy`, message);
+                const notification = this._notify(`收到来自 ${peerDisplayName} 的文件 - 点击复制`, message);
                 this._bind(notification, _ => this._copyText(message, notification));
             }
         }
@@ -1681,11 +1681,11 @@ class Notifications {
             }
             let title = files[0].name;
             if (files.length >= 2) {
-                title += ` and ${files.length - 1} other `;
-                title += imagesOnly ? 'image' : 'file';
-                if (files.length > 2) title += "s";
+                title += ` 和其他 ${files.length - 1} 个`;
+                title += imagesOnly ? '图片' : '文件';
+                // if (files.length > 2) title += "s";
             }
-            const notification = this._notify(title, 'Click to download');
+            const notification = this._notify(title, '点击下载');
             this._bind(notification, _ => this._download(notification));
         }
     }
@@ -1701,13 +1701,13 @@ class Notifications {
             }
             let descriptor;
             if (request.header.length > 1) {
-                descriptor = imagesOnly ? ' images' : ' files';
+                descriptor = imagesOnly ? '图片' : '文件';
             } else {
-                descriptor = imagesOnly ? ' image' : ' file';
+                descriptor = imagesOnly ? '图片' : '文件';
             }
             let displayName = $(peerId).querySelector('.name').textContent
-            let title = `${displayName} would like to transfer ${request.header.length} ${descriptor}`;
-            const notification = this._notify(title, 'Click to show');
+            let title = `${displayName} 想要向你发送 ${request.header.length} ${descriptor}`;
+            const notification = this._notify(title, '点击查看');
         }
     }
 
@@ -1719,9 +1719,9 @@ class Notifications {
     _copyText(message, notification) {
         if (navigator.clipboard.writeText(message)) {
             notification.close();
-            this._notify('Copied text to clipboard');
+            this._notify('已复制文本到剪贴板');
         } else {
-            this._notify('Writing to clipboard failed. Copy manually!');
+            this._notify('复制到剪贴板失败，请尝试手动复制！');
 
         }
     }
@@ -1746,11 +1746,11 @@ class NetworkStatusUI {
     }
 
     _showOfflineMessage() {
-        Events.fire('notify-user', 'You are offline');
+        Events.fire('notify-user', '你已离线');
     }
 
     _showOnlineMessage() {
-        Events.fire('notify-user', 'You are back online');
+        Events.fire('notify-user', '你已重新连接');
     }
 }
 
@@ -2313,7 +2313,5 @@ window.addEventListener("keydown", (e) => {
 });
 
 Notifications.PERMISSION_ERROR = `
-Notifications permission has been blocked
-as the user has dismissed the permission prompt several times.
-This can be reset in Page Info
-which can be accessed by clicking the lock icon next to the URL.`;
+通知权限已被阻止因为用户已多次忽略权限提示。
+可以通过点击浏览器地址栏左侧的按钮重新设置。`;

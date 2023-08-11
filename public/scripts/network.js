@@ -1,7 +1,7 @@
 window.URL = window.URL || window.webkitURL;
 window.isRtcSupported = !!(window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection);
 
-if (!window.isRtcSupported) alert("WebRTC must be enabled for PairDrop to work");
+if (!window.isRtcSupported) alert("WebRTC 在此设备上被禁用或不受支持");
 
 window.hiddenProperty = 'hidden' in document ? 'hidden' :
     'webkitHidden' in document ? 'webkitHidden' :
@@ -46,12 +46,12 @@ class ServerConnection {
     _onOpen() {
         console.log('WS: server connected');
         Events.fire('ws-connected');
-        if (this._isReconnect) Events.fire('notify-user', 'Connected.');
+        if (this._isReconnect) Events.fire('notify-user', '已连接发现网络');
     }
 
     _onPairDeviceInitiate() {
         if (!this._isConnected()) {
-            Events.fire('notify-user', 'You need to be online to pair devices.');
+            Events.fire('notify-user', '若要配对设备，你需要连接到发现网络');
             return;
         }
         this.send({ type: 'pair-device-initiate' })
@@ -107,7 +107,7 @@ class ServerConnection {
                 Events.fire('pair-device-canceled', msg.roomKey);
                 break;
             case 'pair-device-join-key-rate-limit':
-                Events.fire('notify-user', 'Rate limit reached. Wait 10 seconds and try again.');
+                Events.fire('notify-user', '已达到速率限制，请稍后重试');
                 break;
             case 'secret-room-deleted':
                 Events.fire('secret-room-deleted', msg.roomSecret);
@@ -183,7 +183,7 @@ class ServerConnection {
 
     _onDisconnect() {
         console.log('WS: server disconnected');
-        Events.fire('notify-user', 'Connecting..');
+        Events.fire('notify-user', '正在重新连接到发现网络...');
         clearTimeout(this._reconnectTimer);
         this._reconnectTimer = setTimeout(_ => this._connect(), 1000);
         Events.fire('ws-disconnected');
@@ -488,7 +488,7 @@ class Peer {
 
     _abortTransfer() {
         Events.fire('set-progress', {peerId: this._peerId, progress: 1, status: 'wait'});
-        Events.fire('notify-user', 'Files are incorrect.');
+        Events.fire('notify-user', '文件错误');
         this._filesReceived = [];
         this._requestAccepted = null;
         this._digester = null;
@@ -546,7 +546,7 @@ class Peer {
         this._chunker = null;
         if (!this._filesQueue.length) {
             this._busy = false;
-            Events.fire('notify-user', 'File transfer completed.');
+            Events.fire('notify-user', '文件传输完毕');
             Events.fire('files-sent'); // used by 'Snapdrop & PairDrop for Android' app
         } else {
             this._dequeueFile();
@@ -558,7 +558,7 @@ class Peer {
             Events.fire('set-progress', {peerId: this._peerId, progress: 1, status: 'wait'});
             this._filesRequested = null;
             if (message.reason === 'ios-memory-limit') {
-                Events.fire('notify-user', "Sending files to iOS is only possible up to 200MB at once");
+                Events.fire('notify-user', "在 iOS 设备上，由于设备限制，单次发送文件不能超过 200MB");
             }
             return;
         }
@@ -568,7 +568,7 @@ class Peer {
     }
 
     _onMessageTransferCompleted() {
-        Events.fire('notify-user', 'Message transfer completed.');
+        Events.fire('notify-user', '消息传递完毕');
     }
 
     sendText(text) {
@@ -713,7 +713,7 @@ class RTCPeer extends Peer {
     _onBeforeUnload(e) {
         if (this._busy) {
             e.preventDefault();
-            return "There are unfinished transfers. Are you sure you want to close?";
+            return "有传输正在进行中，确定离开关闭页面吗？";
         }
     }
 
