@@ -63,6 +63,12 @@ const rtcConfig = process.env.RTC_CONFIG
         "iceServers": [
             {
                 "urls": "stun:stun.l.google.com:19302"
+            },
+            {
+                "urls": "stun:stun.qq.com"
+            },
+            {
+                "urls": "stun:stun.syncthing.net"
             }
         ]
     };
